@@ -1,0 +1,62 @@
+﻿@model IEnumerable<CandidatosProyect.Client.Models.CandidatoModel>
+
+@{
+    ViewData["Title"] = "Candidatos";
+}
+
+<h1 class="text-center">Candidatos</h1>
+
+<p class="text-center">
+    <a class="btn btn-dark" asp-action="Create">Crear Nuevo Candidato</a>
+</p>
+
+<table class="table-dark table table-striped table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Apellido)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaNacimiento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Telefono)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var candidato in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => candidato.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => candidato.Apellido)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => candidato.FechaNacimiento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => candidato.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => candidato.Telefono)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = candidato.Codigo }) |
+                    @Html.ActionLink("Details", "Details", new { id = candidato.Codigo }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = candidato.Codigo })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

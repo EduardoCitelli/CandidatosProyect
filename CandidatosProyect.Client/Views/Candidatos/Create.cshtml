@@ -1,0 +1,119 @@
+﻿@model CandidatosProyect.Client.Models.CandidatoModel
+
+@{
+    ViewData["Title"] = "Nuevo Candidato";
+}
+
+<h1>Crear</h1>
+
+<h4>Nuevo Candidato</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" enctype="multipart/form-data">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Apellido" class="control-label"></label>
+                <input asp-for="Apellido" class="form-control" />
+                <span asp-validation-for="Apellido" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FechaNacimiento" class="control-label"></label>
+                <input asp-for="FechaNacimiento" class="form-control" />
+                <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Telefono" class="control-label"></label>
+                <input asp-for="Telefono" class="form-control" />
+                <span asp-validation-for="Telefono" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CV" class="control-label"></label>
+                <input type="file" asp-for="CV" class="form-control-file" />
+                <span asp-validation-for="CV" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input id="botonAddEmpleo" type="button" value="Agregar Empleo" class="btn btn-warning" data-url="@Url.Action("GetChildEmpleo", "Candidatos")" />
+            </div>
+
+            <div id="newEmpleoDiv">
+
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Crear" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Volver</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script type="text/javascript">
+    let requestVerificationToken = $("input[name='__RequestVerificationToken']").val();
+
+    $("#botonAddEmpleo").click(function () {
+
+        console.log("Controller Button clicked");
+
+        console.log($("#botonAddEmpleo").data("url"));
+
+        $.ajax({
+
+            type: "GET",
+            url: "/Candidatos/GetChildEmpleo",
+            headers: {
+                "RequestVerificationToken": requestVerificationToken
+            }
+
+        }).done(function (data, statusText, xhdr) {
+
+            console.log("Done");
+
+            console.log(data);
+
+            $("#newEmpleoDiv").after(data);
+
+        }).fail(function (xhdr, statusText, errorText) {
+
+            console.log("Failed");
+
+            $("#newEmpleoDiv").text(JSON.stringify(xhdr));
+        });
+    });
+
+    $(document).on('click', '.deleteButton', function (e) {
+
+        e.preventDefault();
+
+        const elementToRemove = document.getElementById(e.target.id).parentNode;
+
+        jQuery(elementToRemove).fadeOut('slow', function () {
+            elementToRemove.remove();
+        });
+    });
+</script>
+}
+
