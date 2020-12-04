@@ -1,5 +1,6 @@
 ﻿namespace CandidatosProyect.Client.Models
 {
+    using CandidatosProyect.Api.Client;
     using Microsoft.AspNetCore.Mvc;
     using System;
     using System.ComponentModel.DataAnnotations;
@@ -9,6 +10,13 @@
         public EmpleoModel()
         {
             this.Id = Guid.NewGuid();
+        }
+
+        public EmpleoModel(Empleos empleo) : this()
+        {
+            this.NombreEmpresa = empleo.Emp_NombreEmpresa;
+            this.FechaInicio = empleo.Emp_FechaInicio.DateTime;
+            this.FechaFinal = empleo.Emp_FechaFinal.DateTime;
         }
 
         [Display(Name = "Empleo Id")]

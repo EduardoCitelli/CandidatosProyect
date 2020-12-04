@@ -14,9 +14,8 @@
             this.Empleos = new List<EmpleoModel>();
         }
 
-        public CandidatoModel(Candidatos candidato) : base()
+        public CandidatoModel(Candidatos candidato) : this()
         {
-            this.Codigo = Guid.NewGuid();
             this.IdEntity = candidato.Can_Id;
             this.Nombre = candidato.Can_Nombre;
             this.Apellido = candidato.Can_Apellido;
