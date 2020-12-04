@@ -6,9 +6,7 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.StaticFiles;
-    using Microsoft.Net.Http.Headers;
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
@@ -36,7 +34,9 @@
 
         public ActionResult Details(int id)
         {
-            return View();
+            var model = this.GenerarModel(id);
+
+            return this.View(model);
         }
 
         public ActionResult Create()
@@ -156,9 +156,10 @@
                 var respuesta = await this.candidatosClient.ModificarCandidatoAsync(id, candidatoApi);
                 return this.RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return this.View();
+                //return this.View(candidato);
+                throw new Exception(ex.Message);
             }
         }
 

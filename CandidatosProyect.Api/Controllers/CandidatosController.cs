@@ -41,7 +41,7 @@
             try
             {
                 this.service.Alta(candidato);
-                return NoContent();
+                return this.NoContent();
             }
             catch (Exception ex)
             {
@@ -66,7 +66,7 @@
 
                 this.service.Modificar(candidato);
 
-                return this.NoContent();
+                return this.Ok();
             }
             catch (Exception ex)
             {

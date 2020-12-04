@@ -5,20 +5,17 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using System.Diagnostics;
-    using System.Threading.Tasks;
-
+    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ICandidatosClient candidatosClient;
 
         public HomeController(ILogger<HomeController> logger, ICandidatosClient candidatosClient)
         {
             this._logger = logger;
-            this.candidatosClient = candidatosClient;
         }
 
-        public async Task<IActionResult> Index() => this.View();
+        public IActionResult Index() => this.View();
 
         public IActionResult Privacy() => this.View();
 
