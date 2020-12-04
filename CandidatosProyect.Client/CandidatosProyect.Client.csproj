@@ -20,4 +20,8 @@
     <ProjectReference Include="..\CandidatosProyect.Api\CandidatosProyect.Api.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Logs\" />
+  </ItemGroup>
+
 </Project>

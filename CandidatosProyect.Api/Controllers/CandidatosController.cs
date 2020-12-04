@@ -3,6 +3,7 @@
     using CandidatosProyect.Entidades;
     using CandidatosProyect.Service;
     using Microsoft.AspNetCore.Mvc;
+    using Serilog;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -12,6 +13,12 @@
     public class CandidatosController : ControllerBase
     {
         private ICandidatosService service;
+        private readonly ILogger logger;
+
+        public CandidatosController(ILogger logger)
+        {
+            this.logger = logger;
+        }
 
         [HttpGet]
         public ActionResult<IEnumerable<Candidatos>> GetCandidatos()
@@ -41,7 +48,10 @@
             try
             {
                 this.service.Alta(candidato);
-                return this.NoContent();
+
+                this.logger.Information($"Agregado Nuevo Candidato - {candidato.can_Apellido}, {candidato.can_Nombre}");
+
+                return this.Ok();
             }
             catch (Exception ex)
             {
