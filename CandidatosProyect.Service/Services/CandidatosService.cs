@@ -26,5 +26,15 @@
 
             return lista;
         }
+
+        protected override void LogicaParaEliminar(int idEntity, IRepository<Candidatos> repository)
+        {
+            var objeto = repository.Query(x => x.can_Id == idEntity)
+                                   .AsQueryable()
+                                   .Include(x => x.Empleos)
+                                   .FirstOrDefault();
+
+            repository.Remove(objeto);
+        }
     }
 }

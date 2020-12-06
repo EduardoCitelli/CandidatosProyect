@@ -1,12 +1,13 @@
 namespace CandidadatosProyect.Api
 {
+    using CandidatosProyect.Service;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Serilog;
-    using ServiceStack.Text;
+    using Serilog.Sinks.MSSqlServer;
     using System.IO;
 
     public class Startup
@@ -27,10 +28,8 @@ namespace CandidadatosProyect.Api
             services.AddControllersWithViews()
                     .AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-                        
-            services.AddSingleton((ILogger)new LoggerConfiguration()
-                                        .WriteTo.RollingFile(Path.Combine("C:\\Users\\Eduvino\\source\\repos\\CandidatosProyect\\CandidatosProyect.Client\\wwwroot\\Logs", "log-{Date}.txt"))
-                                        .CreateLogger());
+
+            services.AddSingleton<ICandidatosService>(new CandidatosService());
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory)
@@ -40,8 +39,19 @@ namespace CandidadatosProyect.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            var conectionString = @"Server=EDU-PC\EDU;Database=CandidatosProyect;Trusted_Connection=True;";
+
+            var sqlLoggerOptions = new MSSqlServerSinkOptions()
+            {
+                AutoCreateSqlTable = true,
+                SchemaName = "Logger",
+                TableName = "Logs",
+                BatchPostingLimit = 1
+            };
+
             Log.Logger = new LoggerConfiguration()
                             .WriteTo.RollingFile(Path.Combine(env.ContentRootPath, "log-{Date}.txt"))
+                            .WriteTo.MSSqlServer(conectionString, sqlLoggerOptions)
                             .CreateLogger();
 
             app.UseHttpsRedirection();

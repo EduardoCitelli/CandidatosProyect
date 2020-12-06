@@ -4,16 +4,14 @@
 <div id="empleo-@Model.Id">
     @using (Html.BeginCollectionItem(nameof(CandidatoModel.Empleos)))
     {        
-        <div class="row">
-            <div class="col-md-6">
+        <div class="row" style="margin-bottom:8px">
+            <div class="col-md-12 text-center">
 
                 <h4>Empleo</h4>
                 <hr />
 
                 <input asp-for="Id" type="hidden" />
                 <input asp-for="CodigoCandidato" type="hidden" />
-
-                <button id="deleteEmpleo-@Model.Id" type="button" class="btn btn-danger deleteButton">Eliminar Empleo</button>
 
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -34,6 +32,10 @@
                     <input asp-for="FechaFinal" class="form-control" />
                     <span asp-validation-for="FechaFinal" class="text-danger"></span>
                 </div>
+
+                <button id="deleteEmpleo-@Model.Id" type="button" class="btn btn-danger deleteButton">
+                    Eliminar Empleo
+                </button>
             </div>
         </div>
     }

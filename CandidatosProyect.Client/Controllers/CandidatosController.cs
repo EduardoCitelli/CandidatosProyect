@@ -154,11 +154,11 @@
                 }
 
                 var respuesta = await this.candidatosClient.ModificarCandidatoAsync(id, candidatoApi);
+
                 return this.RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
-                //return this.View(candidato);
                 throw new Exception(ex.Message);
             }
         }

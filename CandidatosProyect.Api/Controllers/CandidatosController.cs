@@ -12,19 +12,16 @@
     [ApiController]
     public class CandidatosController : ControllerBase
     {
-        private ICandidatosService service;
-        private readonly ILogger logger;
+        private readonly ICandidatosService service;
 
-        public CandidatosController(ILogger logger)
+        public CandidatosController(ICandidatosService candidatosService)
         {
-            this.logger = logger;
+            this.service = candidatosService;
         }
 
         [HttpGet]
         public ActionResult<IEnumerable<Candidatos>> GetCandidatos()
         {
-            this.service = new CandidatosService();
-
             var lista = this.service.ObtenerTodos().ToList();
 
             return lista;
@@ -33,8 +30,6 @@
         [HttpGet("{id}")]
         public ActionResult<Candidatos> GetCandidato(int id)
         {
-            this.service = new CandidatosService();
-
             var candidato = this.service.ObtenerUno(id);
 
             return candidato;
@@ -43,18 +38,17 @@
         [HttpPost]
         public ActionResult NuevoCandidato(Candidatos candidato)
         {
-            this.service = new CandidatosService();
-
             try
             {
                 this.service.Alta(candidato);
 
-                this.logger.Information($"Agregado Nuevo Candidato - {candidato.can_Apellido}, {candidato.can_Nombre}");
+                Log.Information($"Agregado Nuevo Candidato - {candidato.can_Apellido}, {candidato.can_Nombre}");
 
                 return this.Ok();
             }
             catch (Exception ex)
             {
+                Log.Error(ex.Message);
                 throw new Exception (ex.Message);
             }
         }
@@ -62,8 +56,6 @@
         [HttpPut("{id}")]
         public ActionResult ModificarCandidato(int id, Candidatos candidatoModificado)
         {
-            this.service = new CandidatosService();
-
             try
             {
                 var candidato = this.service.ObtenerUno(id);
@@ -76,10 +68,13 @@
 
                 this.service.Modificar(candidato);
 
+                Log.Information($"Modificado el Candidato - {candidatoModificado.can_Apellido}, {candidatoModificado.can_Nombre}");
+
                 return this.Ok();
             }
             catch (Exception ex)
             {
+                Log.Error(ex.Message);
                 throw new Exception(ex.Message);
             }
         }
@@ -93,7 +88,7 @@
                 serviceEmpleos.Eliminar(empleo.emp_Id);
             }
 
-            return this.NoContent();
+            return this.Ok();
         }
 
         private void UpdateCandidato(Candidatos candidatoModificado, Candidatos candidato)
@@ -107,22 +102,19 @@
         }
 
         [HttpDelete("{id}")]
-        public bool EliminarCandidato(int id)
+        public ActionResult EliminarCandidato(int id)
         {
-            this.service = new CandidatosService();
-
-            var candidato = this.service.ObtenerUno(id);
-
             try
             {
-                this.EliminarEmpleosDelCandidato(candidato);
-
                 this.service.Eliminar(id);
 
-                return true;
+                Log.Information($"Candidato Eliminado");
+
+                return this.Ok();
             }
             catch (Exception ex)
             {
+                Log.Error(ex.Message);
                 throw new Exception(ex.Message);
             }
         }

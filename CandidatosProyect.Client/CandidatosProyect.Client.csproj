@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\Logs\**" />
+    <Content Remove="wwwroot\Logs\**" />
+    <EmbeddedResource Remove="wwwroot\Logs\**" />
+    <None Remove="wwwroot\Logs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BeginCollectionItemCore" Version="1.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.8" />
     <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="3.0.0">
@@ -18,10 +25,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CandidatosProyect.Api\CandidatosProyect.Api.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\Logs\" />
   </ItemGroup>
 
 </Project>
